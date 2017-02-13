@@ -16,10 +16,14 @@
         return `[${issue}] ${title}`;
     };
 
+    const isIssuePage = function() {
+        return /issues\/(\d+)$/.test(window.location.pathname);
+    };
+
     const addCopyButton = function() {
         const $gitHeader = $('.gh-header-actions:first');
 
-        if ($gitHeader.find('.cp-btn-copy:first').length !== 0) {
+        if (!isIssuePage() || !$gitHeader || $gitHeader.find('.cp-btn-copy:first').length !== 0) {
             return;
         }
 
