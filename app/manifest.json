@@ -1,0 +1,33 @@
+{
+    "name": "copy-git-issue-title",
+    "version": "0.0.1",
+    "manifest_version": 2,
+    "description": "Copy issue title with issue number in Github",
+
+    "browser_action": {
+        "default_icon": "images/icon.png",
+        "default_popup": "../popup.html",
+        "default_title": "Git Helper"
+    },
+    "permissions": [
+        "<all_urls>",
+        "tabs",
+        "activeTab",
+        "*://*/*/issues",
+        "*://*/*/issues/*"
+    ],
+    "content_scripts": [{
+        "matches": [
+            "*://*/*/issues/*"
+        ],
+        "js": [
+            "bower_components/jQuery/dist/jquery.js",
+            "scripts/contentscript.js"
+        ],
+        "run_at": "document_end"
+    }],
+    "background": {
+        "scripts": ["scripts/background.js"]
+    },
+    "web_accessible_resources": ["images/*.svg"]
+}
