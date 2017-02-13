@@ -1,8 +1,9 @@
 {
-    "name": "copy-git-issue-title",
-    "version": "0.0.2",
-    "dependencies": {
-        "jQuery": "~3.1.1"
-    },
-    "devDependencies": {}
+  "name": "copy-git-issue-title",
+  "version": "0.0.2",
+  "dependencies": {
+    "jQuery": "~3.1.1",
+    "clipboard": "^1.6.0"
+  },
+  "devDependencies": {}
 }

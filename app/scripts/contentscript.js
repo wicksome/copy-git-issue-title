@@ -1,41 +1,51 @@
 (function($) {
     'use strict';
 
-    var copyIssusTitle = function() {
-        const $container = $('#js-repo-pjax-container');
+    const getCommitTitle = function() {
+        const repoPath = $('.zh-issueviewer-repopath:first');
 
-        var repoPath = $('.zh-issueviewer-repopath:first');
+        let issue;
         if (!repoPath.empty()) {
-            console.log(repoPath.html().trim());
+            issue = repoPath.html().trim();
         } else {
-            var url = window.location.href;
-            var issueTitle = $container.find('.js-issue-title').text().trim();
-            console.log(url, issueTitle);
+            var match = /\/(.*)\/issues\/(\d*)/.exec(window.location.pathname);
+            issue = `${match[1]}#${match[2]}`;
         }
+        var title = $('#js-repo-pjax-container .js-issue-title:first').text().trim();
 
+        return `[${issue}] ${title}`;
     };
 
-    var changeMergeButtonState = function() {
-        var $gitHeader = $('.gh-header-meta:first');
+    const addCopyButton = function() {
+        const $gitHeader = $('.gh-header-actions:first');
 
-        if ($gitHeader.find('.state').length === 1) {
-            // var imgSrc = chrome.extension.getURL("flash.svg");
-            var btnTpl = '<div class="state _btnCopyIssueTitle">Copy</dic>';
-            $gitHeader.find('.state:first').after(btnTpl);
-
-            $('._btnCopyIssueTitle:first').on('click', copyIssusTitle);
+        if ($gitHeader.find('.cp-btn-copy:first').length !== 0) {
+            return;
         }
 
-        chrome.runtime.sendMessage({
-            from: 'content',
-            subject: 'localStorage'
-        }, function(response) {
-            if (!response) {
-                return;
-            }
+        var btn = document.createElement('button');
+        btn.setAttribute('type', 'button');
+        btn.setAttribute('class', 'btn btn-sm cp-btn-copy');
+        btn.setAttribute('data-clipboard-text', getCommitTitle());
+        btn.innerHTML = 'Copy';
+
+        $gitHeader.prepend(btn);
+        const copyBtn = new Clipboard('.cp-btn-copy');
+
+        copyBtn.on('success', function(e) {
+            console.info('Action:', e.action);
+            console.info('Text:', e.text);
+            console.info('Trigger:', e.trigger);
+
+            e.clearSelection();
+        });
+
+        copyBtn.on('error', function(e) {
+            console.error('Action:', e.action);
+            console.error('Trigger:', e.trigger);
         });
     };
 
-    changeMergeButtonState();
-    setInterval(changeMergeButtonState, 1000);
+    addCopyButton();
+    setInterval(addCopyButton, 1000);
 })(jQuery);

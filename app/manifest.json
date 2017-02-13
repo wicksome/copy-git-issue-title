@@ -10,10 +10,6 @@
         "default_title": "Git Helper"
     },
     "permissions": [
-        "<all_urls>",
-        "tabs",
-        "activeTab",
-        "*://*/*/issues",
         "*://*/*/issues/*"
     ],
     "content_scripts": [{
@@ -22,8 +18,10 @@
         ],
         "js": [
             "bower_components/jQuery/dist/jquery.js",
+            "bower_components/clipboard/dist/clipboard.min.js",
             "scripts/contentscript.js"
         ],
+        "css": ["styles/main.css"],
         "run_at": "document_end"
     }],
     "background": {
