@@ -2,16 +2,10 @@
     'use strict';
 
     const getCommitTitle = function() {
-        const repoPath = $('.zh-issueviewer-repopath:first');
+        var match = /\/(.*)\/issues\/(\d*)/.exec(window.location.pathname);
 
-        let issue;
-        if (!repoPath.empty()) {
-            issue = repoPath.html().trim();
-        } else {
-            var match = /\/(.*)\/issues\/(\d*)/.exec(window.location.pathname);
-            issue = `${match[1]}#${match[2]}`;
-        }
-        var title = $('#js-repo-pjax-container .js-issue-title:first').text().trim();
+        const issue = `${match[1]}#${match[2]}`;
+        const title = $('#js-repo-pjax-container .js-issue-title:first').text().trim();
 
         return `[${issue}] ${title}`;
     };
