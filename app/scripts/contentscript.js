@@ -37,16 +37,23 @@
         const copyBtn = new Clipboard('.cp-btn-copy');
 
         copyBtn.on('success', function(e) {
+            e.clearSelection();
             console.info('Action:', e.action);
             console.info('Text:', e.text);
             console.info('Trigger:', e.trigger);
 
-            e.clearSelection();
+            e.trigger.setAttribute('class', 'btn btn-sm cp-btn-copy tooltipped tooltipped-s');
+            e.trigger.setAttribute('aria-label', 'Copied');
         });
 
         copyBtn.on('error', function(e) {
             console.error('Action:', e.action);
             console.error('Trigger:', e.trigger);
+        });
+
+        btn.addEventListener('mouseleave', function(e) {
+            e.currentTarget.setAttribute('class', 'btn btn-sm cp-btn-copy');
+            e.currentTarget.removeAttribute('aria-label');
         });
     };
 
